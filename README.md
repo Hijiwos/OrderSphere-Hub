@@ -20,14 +20,14 @@ OrderSphere-Hub/
 ├─ backend/                 # FastAPI 后端
 │  ├─ app/
 │  ├─ data/
-│  │  └─ foodMsg.json       # 菜单 JSON（你上传的完整文件）
+│  │  └─ foodMsg.json       # 菜单 JSON
 │  ├─ requirements.txt
-│  └─ venv/                 # 可选，本地虚拟环境（已在 .gitignore）
+│  └─ venv/                 # 本地虚拟环境
 │
 ├─ frontend/                # Vue3 前端
 │  ├─ src/
-│  ├─ dist/                 # 构建产物（已在 .gitignore）
-│  └─ node_modules/         # 依赖（已在 .gitignore）
+│  ├─ dist/                 # 构建产物
+│  └─ node_modules/         # 依赖
 │
 ├─ db/
 │  └─ ordersphere.db        # SQLite 数据库（自动生成）
