@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .config import settings
-from .database import Base, engine
-from .routers import menu, orders, health, auth, admin_menu, admin_orders, admin_users
+from app.config import settings
+from app.database import Base, engine
+from app.routers import menu, orders, health, auth, admin_menu, admin_orders, admin_users
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+import os
+
+dist_path = os.path.join(os.path.dirname(__file__), "..", "dist")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 IMAGE_DIR = BASE_DIR / "data" / "images"
@@ -30,3 +33,4 @@ app.include_router(admin_orders.router)
 app.include_router(admin_users.router)
 
 app.mount("/images", StaticFiles(directory=IMAGE_DIR), name="images")
+app.mount("/", StaticFiles(directory=dist_path, html=True), name="static")

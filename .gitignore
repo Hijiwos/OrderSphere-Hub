@@ -25,4 +25,6 @@ yarn-error.log*
 Thumbs.db
 
 # dist
-backend/dist/
+dist
+build
+main.spec

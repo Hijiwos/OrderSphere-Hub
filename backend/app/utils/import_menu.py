@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 from sqlalchemy.orm import Session
-from ..models import MenuItem, Base
-from ..database import SessionLocal, engine
+from app.models import MenuItem, Base
+from app.database import SessionLocal, engine
 
 # 自动创建所有表
 Base.metadata.create_all(bind=engine)
