@@ -33,6 +33,7 @@ const user = useUserStore()
 
 const logout = () => {
   user.logout()
+  window.location.href = '/'
 }
 
 const toggleDark = () => {

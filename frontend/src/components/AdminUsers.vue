@@ -81,7 +81,7 @@ const remove = async (id) => {
     }
   })
   if (res.ok) {
-    fetchUsers()
+    await fetchUsers()
   } else {
     error.value = '删除失败'
   }
@@ -95,7 +95,7 @@ const makeAdmin = async (id) => {
     }
   })
   if (res.ok) {
-    fetchUsers()
+    await fetchUsers()
   } else {
     error.value = '设置管理员失败'
   }

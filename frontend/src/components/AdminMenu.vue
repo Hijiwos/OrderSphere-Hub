@@ -178,7 +178,7 @@ const save = async () => {
   }
 
   closeDialog()
-  fetchMenu()
+  await fetchMenu()
 }
 
 const remove = async (id) => {
@@ -190,7 +190,7 @@ const remove = async (id) => {
     }
   })
   if (res.ok) {
-    fetchMenu()
+    await fetchMenu()
   }
 }
 

@@ -3,7 +3,7 @@
     <header class="bg-white shadow px-6 py-4 flex items-center justify-between">
       <h1 class="text-xl font-bold">管理后台</h1>
       <div class="space-x-3">
-        <span class="text-sm text-gray-600">管理员：{{ username || '未知' }}</span>
+        <span class="text-sm text-gray-600">管理员：{{ user.username || '未知' }}</span>
 
         <router-link
           to="/"
@@ -11,13 +11,6 @@
         >
           返回前台
         </router-link>
-
-        <button
-          @click="logout"
-          class="text-sm text-red-600 hover:underline"
-        >
-          退出
-        </button>
       </div>
     </header>
 
@@ -50,10 +43,13 @@
 </template>
 
 <script setup>
+import {useUserStore} from '../store/user'
 import { ref, onMounted } from 'vue'
 import AdminMenu from '../components/AdminMenu.vue'
 import AdminOrders from '../components/AdminOrders.vue'
 import AdminUsers from '../components/AdminUsers.vue'
+
+const user = useUserStore()
 
 const tabs = [
   { key: 'menu', label: '菜单管理' },
@@ -64,18 +60,13 @@ const tabs = [
 const currentTab = ref('menu')
 
 // ⭐ 使用管理员 token
-const token = ref(localStorage.getItem('admin_token') || '')
-const username = ref(localStorage.getItem('admin_username') || '')
+const token = ref(localStorage.getItem('token') || '')
+const username = ref(localStorage.getItem('username') || '')
 
 onMounted(() => {
   if (!token.value) {
-    window.location.href = '/admin/login'
+    window.location.href = '/login'
   }
 })
 
-const logout = () => {
-  localStorage.removeItem('admin_token')
-  localStorage.removeItem('admin_username')
-  window.location.href = '/admin/login'
-}
 </script>
