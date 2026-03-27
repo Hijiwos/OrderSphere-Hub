@@ -6,6 +6,7 @@ import Checkout from '../views/Checkout.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Admin from '../views/Admin.vue'
+import UserProfile from '../views/UserProfile.vue'
 
 const routes = [
   { path: '/', redirect: '/menu' },
@@ -13,7 +14,8 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/menu', component: Menu },
   { path: '/checkout', component: Checkout },
-  { path: '/admin', component: Admin }
+  { path: '/admin', component: Admin },
+  { path: '/profile', component: UserProfile }
 ]
 
 const router = createRouter({

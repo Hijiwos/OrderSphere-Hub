@@ -13,7 +13,6 @@ class UserCreate(UserBase):
     password: str
     confirm_password: str
 
-    # Pydantic v2 正确写法
     @field_validator("confirm_password")
     def passwords_match(cls, v, info):
         password = info.data.get("password")
@@ -33,6 +32,20 @@ class User(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# 新增：用户自行修改密码时的请求体
+class UserUpdate(BaseModel):
+    current_password: str
+    password: str
+    confirm_password: str
+
+    @field_validator("confirm_password")
+    def passwords_match(cls, v, info):
+        password = info.data.get("password")
+        if password and v != password:
+            raise ValueError("两次输入的密码不一致")
+        return v
 
 
 # -------------------------

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import Base, engine
-from app.routers import menu, orders, health, auth, admin_menu, admin_orders, admin_users
+from app.routers import menu, orders, health, auth, admin_menu, admin_orders, admin_users, users
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import os
@@ -31,6 +31,7 @@ app.include_router(auth.router)
 app.include_router(admin_menu.router)
 app.include_router(admin_orders.router)
 app.include_router(admin_users.router)
+app.include_router(users.router)
 
 app.mount("/images", StaticFiles(directory=IMAGE_DIR), name="images")
 app.mount("/", StaticFiles(directory=dist_path, html=True), name="static")

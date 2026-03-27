@@ -11,7 +11,9 @@
       </router-link>
 
       <span v-else class="flex items-center space-x-2">
-        <span>{{ user.username }}</span>
+        <router-link to="/profile" class="hover:text-blue-300">
+          {{ user.username }}
+        </router-link>
         <button @click="logout" class="text-red-400 hover:text-red-300">退出</button>
       </span>
 
