@@ -22,7 +22,7 @@
       </router-link>
 
       <button @click="toggleDark" class="ml-2 text-yellow-300 hover:text-yellow-200">
-        🌙
+        {{ dark ? '☀️' : '🌙' }}
       </button>
     </div>
   </nav>
@@ -30,15 +30,18 @@
 
 <script setup>
 import {useUserStore} from '../store/user'
+import { ref } from 'vue'
 
 const user = useUserStore()
+const dark = ref(false)
 
 const logout = () => {
   user.logout()
   window.location.href = '/'
 }
 
-const toggleDark = () => {
+let toggleDark = () => {
   document.documentElement.classList.toggle('dark')
+  dark.value = !dark.value
 }
 </script>
