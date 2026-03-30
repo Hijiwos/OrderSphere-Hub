@@ -34,17 +34,22 @@ class User(BaseModel):
         from_attributes = True
 
 
-# 新增：用户自行修改密码时的请求体
+# 修改：用户更新请求体，所有字段可选
 class UserUpdate(BaseModel):
-    current_password: str
-    password: str
-    confirm_password: str
+    username: Optional[str] = None
+    current_password: Optional[str] = None
+    password: Optional[str] = None
+    confirm_password: Optional[str] = None
 
     @field_validator("confirm_password")
     def passwords_match(cls, v, info):
         password = info.data.get("password")
-        if password and v != password:
-            raise ValueError("两次输入的密码不一致")
+        # 只有在提供密码或确认密码时才校验
+        if password is not None or v is not None:
+            if password is None or v is None:
+                raise ValueError("修改密码时需要提供新密码与确认密码")
+            if v != password:
+                raise ValueError("两次输入的密码不一致")
         return v
 
 
