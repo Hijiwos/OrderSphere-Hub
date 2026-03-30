@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
 from sqlalchemy.orm import Session
-from app.models import MenuItem, Base
+from app.models import MenuItem, Base, User
 from app.database import SessionLocal, engine
+import bcrypt
 
 # 自动创建所有表
 Base.metadata.create_all(bind=engine)
@@ -21,7 +22,23 @@ def normalize(value):
     return str(value)
 
 
+def create_default_admin(db: Session):
+    """如果不存在 admin 用户，则创建 admin/admin123 管理员账号"""
+    exists = db.query(User).filter(User.username == "admin").first()
+    if exists:
+        return
+
+    hashed = bcrypt.hashpw("admin123".encode(), bcrypt.gensalt()).decode()
+    admin = User(username="admin", password_hash=hashed, is_admin=True)
+    db.add(admin)
+    db.commit()
+    print("已创建默认管理员: admin / admin123")
+
+
 def import_menu_from_json(db: Session):
+    # 在导入菜单前尝试创建默认管理员（如果不存在）
+    create_default_admin(db)
+
     if not DATA_FILE.exists():
         print("foodMsg.json 文件不存在...")
         return
