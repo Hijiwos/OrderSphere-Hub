@@ -33,8 +33,16 @@ const login = async () => {
     })
 
     localStorage.setItem('token', res.data.access_token)
-    const payload = JSON.parse(atob(res.data.access_token.split('.')[1]))
-    userStore.setUser(payload.sub, payload.is_admin)
+    // 从返回的 token payload 或直接返回的 avatar 字段恢复头像
+    let avatar = null
+    try {
+      const payload = JSON.parse(atob(res.data.access_token.split('.')[1]))
+      avatar = payload.avatar || res.data.avatar || null
+      userStore.setUser(payload.sub, payload.is_admin, avatar)
+    } catch (e) {
+      // 如果解析 token 失败，退而使用服务端返回的 avatar 字段
+      userStore.setUser(res.data.username, res.data.is_admin, res.data.avatar || null)
+    }
 
     alert('登录成功')
     await router.push('/menu')

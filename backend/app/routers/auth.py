@@ -65,13 +65,17 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     if not bcrypt.checkpw(user.password.encode(), db_user.password_hash.encode()):
         raise HTTPException(status_code=400, detail="用户名或密码错误")
 
-    token = create_access_token({
+    # 将 avatar 一并放入 token payload（可选），并在响应中返回 avatar 字段
+    payload = {
         "sub": db_user.username,
-        "is_admin": db_user.is_admin
-    })
+        "is_admin": db_user.is_admin,
+        "avatar": db_user.avatar
+    }
+    token = create_access_token(payload)
 
     return {
         "access_token": token,
         "is_admin": db_user.is_admin,
         "username": db_user.username,
+        "avatar": db_user.avatar
     }

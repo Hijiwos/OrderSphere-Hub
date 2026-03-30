@@ -13,6 +13,8 @@ class User(Base):
     username = Column(String(255), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     is_admin = Column(Boolean, default=False)
+    # 新增：存储用户头像路径（例如 "/images/user_{id}.png"）
+    avatar = Column(String(255), nullable=True)
 
     orders = relationship("Order", back_populates="user")
 

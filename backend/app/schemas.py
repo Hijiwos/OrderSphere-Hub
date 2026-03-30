@@ -29,6 +29,7 @@ class User(BaseModel):
     id: int
     username: str
     is_admin: bool
+    avatar: Optional[str] = None
 
     class Config:
         from_attributes = True

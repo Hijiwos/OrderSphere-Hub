@@ -60,17 +60,14 @@ def update_current_user(
 @router.post("/me/avatar")
 async def upload_current_user_avatar(
     file: UploadFile = File(...),
+    db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user),
 ):
     # 仅允许图片类型
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="只支持图片文件")
 
-    # 计算保存路径：将图片保存在 backend/data/images（而非 backend/app/data/images）
-    # __file__ -> backend/app/routers/users.py
-    # parent -> backend/app/routers
-    # parent.parent -> backend/app
-    # parent.parent.parent -> backend
+    # 计算保存路径，与 main.py 中挂载的 /images 对应
     BASE_DIR = Path(__file__).resolve().parent.parent.parent
     IMAGE_DIR = BASE_DIR / "data" / "images"
     IMAGE_DIR.mkdir(parents=True, exist_ok=True)
@@ -85,5 +82,12 @@ async def upload_current_user_avatar(
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="保存图片失败")
 
+    # 持久化 avatar 字段到数据库（保存为静态路径）
+    avatar_path = f"/images/{filename}"
+    current_user.avatar = avatar_path
+    db.add(current_user)
+    db.commit()
+    db.refresh(current_user)
+
     # 返回静态文件 URL，前端可直接使用
-    return {"url": f"/images/{filename}"}
+    return {"url": avatar_path}
