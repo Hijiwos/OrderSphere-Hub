@@ -5,12 +5,16 @@ from app.models import MenuItem, Base, User
 from app.database import SessionLocal, engine
 import bcrypt
 
-# 自动创建所有表
-Base.metadata.create_all(bind=engine)
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DATA_FILE = BASE_DIR / "data" / "foodMsg.json"
 IMAGE_DIR = BASE_DIR / "data" / "images"
+
+# 确保项目根目录下的 db 文件夹存在，避免首次运行导入脚本时报错
+DB_DIR = BASE_DIR.parent / "db"
+DB_DIR.mkdir(parents=True, exist_ok=True)
+
+# 自动创建所有表
+Base.metadata.create_all(bind=engine)
 
 
 def normalize(value):
