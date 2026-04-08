@@ -75,7 +75,7 @@ const waitForDialog = (timeout = 2000) => {
         reject(new Error('弹窗组件未就绪'))
       } else {
         await new Promise(r => setTimeout(r, 50))
-        check()
+        await check()
       }
     }
     check()
@@ -86,6 +86,7 @@ const showSimpleDialog = async () => {
   try {
     const dialog = await waitForDialog()
     const result = await dialog.open({
+    // const result = await dialogRef.value.open({    // 是否需要保护函数？
       title: '购物车',
       message: '已加入购物车：' + props.item.name + ' × ' + quantity.value,
       messageAlign: 'center',

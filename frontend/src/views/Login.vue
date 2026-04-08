@@ -12,6 +12,7 @@
       <router-link to="/register" class="text-blue-500">注册</router-link>
     </p>
   </div>
+  <BaseDialog ref="dialogRef" />
 </template>
 
 <script setup>
@@ -19,6 +20,7 @@ import { ref } from 'vue'
 import api from '../api'
 import { useUserStore } from '../store/user'
 import { useRouter } from 'vue-router'
+import BaseDialog from "../components/BaseDialog.vue";
 
 const username = ref('')
 const password = ref('')
@@ -44,10 +46,52 @@ const login = async () => {
       userStore.setUser(res.data.username, res.data.is_admin, res.data.avatar || null)
     }
 
-    alert('登录成功')
+
+    await showDialog(1500, 'lift', '在线点餐系统', 'left', '登录成功', 'center', undefined)
+    // alert('登录成功')
     await router.push('/menu')
   } catch (e) {
-    alert('登录失败，请检查用户名或密码')
+    await showDialog(1500, 'lift', '在线点餐系统', 'left', '登录失败，请检查用户名或密码', 'center', undefined)
+    // alert('登录失败，请检查用户名或密码')
+  }
+}
+
+const dialogRef = ref(null)
+
+const waitForDialog = (timeout = 2000) => {
+  return new Promise((resolve, reject) => {
+    const start = Date.now()
+    const check = async () => {
+      if (dialogRef.value && typeof dialogRef.value.open === 'function') {
+        resolve(dialogRef.value)
+      } else if (Date.now() - start > timeout) {
+        reject(new Error('弹窗组件未就绪'))
+      } else {
+        await new Promise(r => setTimeout(r, 50))
+        await check()
+      }
+    }
+    check()
+  })
+}
+
+const showDialog = async (duration=5000, titleAlign='lift', title='默认标题', messageAlign='left', message='默认信息', position='center', closeOnClickOverlay=undefined) => {
+  try {
+    const dialog = await waitForDialog()
+    const result = await dialog.open({
+      title: title,
+      message: message,
+      position: position,
+      showButtons: false,
+      closeOnClickOverlay: closeOnClickOverlay,
+      duration: duration,
+      titleAlign: titleAlign,
+      messageAlign: messageAlign,
+      overlay: false
+    })
+    console.log('dialog result:', result)
+  } catch (error) {
+    console.error('弹窗失败或超时', error)
   }
 }
 </script>

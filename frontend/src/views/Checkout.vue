@@ -74,15 +74,56 @@
         提交订单
       </button>
     </div>
+    <BaseDialog ref="dialogRef" />
   </div>
 </template>
 
 <script setup>
 import { useCartStore } from '../store/cart'
 import { useUserStore } from '../store/user'
+import BaseDialog from "../components/BaseDialog.vue";
+import {ref} from "vue";
 
 const cart = useCartStore()
 const user = useUserStore()
+const dialogRef = ref(null)
+
+const waitForDialog = (timeout = 2000) => {
+  return new Promise((resolve, reject) => {
+    const start = Date.now()
+    const check = async () => {
+      if (dialogRef.value && typeof dialogRef.value.open === 'function') {
+        resolve(dialogRef.value)
+      } else if (Date.now() - start > timeout) {
+        reject(new Error('弹窗组件未就绪'))
+      } else {
+        await new Promise(r => setTimeout(r, 50))
+        await check()
+      }
+    }
+    check()
+  })
+}
+
+const showDialog = async (showButtons=false, duration=5000, titleAlign='lift', title='默认标题', messageAlign='left', message='默认信息', position='center', closeOnClickOverlay=undefined) => {
+  try {
+    const dialog = await waitForDialog()
+    const result = await dialog.open({
+      title: title,
+      message: message,
+      position: position,
+      showButtons: showButtons,
+      closeOnClickOverlay: closeOnClickOverlay,
+      duration: duration,
+      titleAlign: titleAlign,
+      messageAlign: messageAlign,
+      overlay: false
+    })
+    console.log('dialog result:', result)
+  } catch (error) {
+    console.error('弹窗失败或超时', error)
+  }
+}
 
 const submitOrder = async () => {
   if (cart.items.length === 0) {
@@ -94,7 +135,8 @@ const submitOrder = async () => {
   const token = localStorage.getItem('token')
 
   if (!username || !token) {
-    alert('请先登录后再提交订单')
+    await showDialog(false, 1500, 'center', '未登录', 'center', '请先登录后再提交订单!!!', 'center', true)
+    // alert('请先登录后再提交订单')
     return
   }
 
@@ -113,11 +155,13 @@ const submitOrder = async () => {
   })
 
   if (!res.ok) {
-    alert('提交订单失败')
+    await showDialog(false, 1500, 'center', '错误', 'center', '提交订单失败', 'center')
+    // alert('提交订单失败')
     return
   }
 
-  alert('订单提交成功')
+  await showDialog(false, 1500, 'center', '谢谢惠顾', 'center', '订单提交成功', 'center', true)
+  // alert('订单提交成功')
   cart.clear()
 }
 </script>
