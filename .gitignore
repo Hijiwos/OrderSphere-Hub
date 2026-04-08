@@ -28,7 +28,11 @@ Thumbs.db
 dist
 build
 main.spec
+.release_venv
+release_builds
+backend/OrderSphereHub.spec
 
 # others
 backend/data/user_images
+frontend/package-lock.json
 frontend/package-lock.json

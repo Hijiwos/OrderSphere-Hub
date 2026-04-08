@@ -61,4 +61,13 @@ app.include_router(users.router)
 # - /user_images -> 用户头像（单独目录，避免混淆）
 app.mount("/images", StaticFiles(directory=MENU_IMAGE_DIR), name="images")
 app.mount("/user_images", StaticFiles(directory=USER_IMAGE_DIR), name="user_images")
-# app.mount("/", StaticFiles(directory=dist_path, html=True), name="static")
+
+# 如果已构建前端（frontend/dist 被拷贝到 backend/dist）则挂载根路由提供前端静态页面
+try:
+    # 规范化 dist_path 为绝对路径
+    _dist_abspath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "dist"))
+    if os.path.isdir(_dist_abspath):
+        app.mount("/", StaticFiles(directory=_dist_abspath, html=True), name="static")
+except Exception:
+    # 忽略静态挂载错误，后端 API 仍可工作
+    pass
