@@ -204,12 +204,6 @@ GET /hybridaction/zybTrackerStatisticsAction ... 404
 
 ---
 
-# 📄 许可证
-
-无
-
----
-
 # 文档格式约定
 
 用户文档为 [USER_GUIDE](https://github.com/Hijiwos/OrderSphere-Hub/blob/main/USER_GUIDE.md) ，请确保不要新建其他的markdown文件
