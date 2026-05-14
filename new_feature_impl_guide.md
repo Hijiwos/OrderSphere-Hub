@@ -187,7 +187,7 @@
 
 ### 时序图（Sequence diagrams）
 
-1. 用户下单（完整链路）
+1. [已选]用户下单（完整链路）
 - 参与者：User UI → 前端 API 层 → 后端 Orders Router → OrderService → DB → Kitchen Dispatcher → Notification Service → 前端/WebSocket → User UI
 - 关键步骤：购物车提交 → 创建订单记录 → 减库存/校验 → 推送厨房看板 → 返回订单确认 → 实时通知用户。
 2. 后厨接单并完成（Kitchen 执行流程）
