@@ -3,6 +3,8 @@
     <h1 class="text-lg sm:text-xl font-bold">OrderSphere-Hub</h1>
 
     <div class="flex items-center space-x-3 sm:space-x-4 text-sm sm:text-base">
+      <router-link to="/help" class="hover:text-blue-300">帮助</router-link>
+      <router-link v-if="user.username" to="/menu" class="hover:text-blue-300">我的订单</router-link>
       <router-link to="/menu" class="hover:text-blue-300">菜单</router-link>
       <router-link to="/checkout" class="hover:text-blue-300">购物车</router-link>
 
