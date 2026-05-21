@@ -13,6 +13,15 @@ import In from '../views/in.vue'
 import Out from '../views/out.vue'
 import Alerts from '../views/alerts.vue'
 import Notifications from '../views/notifications.vue'
+import Audit from '../views/Audit.vue'
+import Reports from '../views/Reports.vue'
+import Settings from '../views/Settings.vue'
+import AdminDashboard from '../views/AdminDashboard.vue'
+import UserOrder from '../views/UserOrder.vue'
+import Help from '../views/Help.vue'
+import Feedback from '../views/Feedback.vue'
+import AdminFeedback from '../views/AdminFeedback.vue'
+
 
 const routes = [
   { path: '/', redirect: '/menu' },
@@ -28,6 +37,15 @@ const routes = [
   { path: '/out', component: Out },
   { path: '/alerts', component: Alerts },
   { path: '/notifications', component: Notifications },
+  { path: '/admin-dashboard', component: AdminDashboard},
+  { path: '/admin/Audit', component: Audit },
+  { path: '/admin/Reports', component: Reports },
+  { path: '/admin/Settings', component: Settings },
+  { path: '/change-password', component: ChangePassword },
+  { path: '/user-order', component: UserOrder },
+  { path: '/help', component: Help },
+  { path: '/feedback', component: Feedback },
+  { path: '/adminfeedback', component: AdminFeedback }
 ]
 
 const router = createRouter({

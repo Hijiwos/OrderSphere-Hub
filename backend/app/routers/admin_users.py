@@ -11,9 +11,6 @@ class UserSimple(schemas.User):
     pass
 
 
-router = APIRouter(prefix="/admin/users", tags=["admin-users"])
-
-
 @router.get("/", response_model=List[schemas.User])
 def get_all_users(db: Session = Depends(get_db), admin=Depends(get_admin_user)):
     return db.query(models.User).all()

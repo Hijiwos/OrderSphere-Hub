@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -15,6 +15,8 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     # 新增：存储用户头像路径（例如 "/images/user_{id}.png"）
     avatar = Column(String(255), nullable=True)
+    # 用户收藏料理
+    liked = Column(Text, nullable=True, default="")
 
     orders = relationship("Order", back_populates="user")
 
