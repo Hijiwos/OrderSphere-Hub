@@ -13,7 +13,26 @@ class UserSimple(schemas.User):
 
 @router.get("/", response_model=List[schemas.User])
 def get_all_users(db: Session = Depends(get_db), admin=Depends(get_admin_user)):
-    return db.query(models.User).all()
+    users = db.query(models.User).all()
+    out = []
+    for u in users:
+        liked_raw = getattr(u, 'liked', None)
+        parsed = []
+        try:
+            if isinstance(liked_raw, str) and liked_raw.strip():
+                parsed = json.loads(liked_raw)
+                if not isinstance(parsed, list):
+                    parsed = []
+            else:
+                parsed = []
+        except Exception:
+            try:
+                parsed = [int(x) for x in str(liked_raw).split(',') if x.strip()]
+            except Exception:
+                parsed = []
+        u.liked = parsed
+        out.append(u)
+    return out
 
 
 @router.delete("/{user_id}")
