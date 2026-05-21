@@ -30,6 +30,8 @@ class User(BaseModel):
     username: str
     is_admin: bool
     avatar: Optional[str] = None
+    # 新增：返回用户收藏的菜品 id 列表（如果为空则返回空列表）
+    liked: Optional[List[int]] = []
 
     class Config:
         from_attributes = True
