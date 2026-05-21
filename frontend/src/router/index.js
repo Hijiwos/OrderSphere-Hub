@@ -8,6 +8,11 @@ import Register from '../views/Register.vue'
 import Admin from '../views/Admin.vue'
 import UserProfile from '../views/UserProfile.vue'
 import ChangePassword from '../views/ChangePassword.vue'
+import Inventory from '../views/inventory.vue'
+import In from '../views/in.vue'
+import Out from '../views/out.vue'
+import Alerts from '../views/alerts.vue'
+import Notifications from '../views/notifications.vue'
 
 const routes = [
   { path: '/', redirect: '/menu' },
@@ -17,7 +22,12 @@ const routes = [
   { path: '/checkout', component: Checkout },
   { path: '/admin', component: Admin },
   { path: '/profile', component: UserProfile },
-  { path: '/change-password', component: ChangePassword }
+  { path: '/change-password', component: ChangePassword },
+  { path: '/inventory', component: Inventory },
+  { path: '/in', component: In },
+  { path: '/out', component: Out },
+  { path: '/alerts', component: Alerts },
+  { path: '/notifications', component: Notifications },
 ]
 
 const router = createRouter({
