@@ -24,6 +24,17 @@
         </button>
       </div>
 
+      <!-- 收藏筛选：独立放置在类型和类别之上 -->
+      <div class="mt-3">
+        <button
+          @click="toggleFavorites"
+          :class="chipClass(showFavorites, 'green')"
+          class="text-xs"
+        >
+          收藏
+        </button>
+      </div>
+
       <!-- 类型 -->
       <div class="mt-4">
         <h3 class="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">类型</h3>
@@ -51,7 +62,7 @@
           >
             <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">{{ groupName }}</div>
 
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 items-center">
               <button
                 v-for="c in groupItems"
                 :key="c"
@@ -95,6 +106,7 @@ import { ref, onMounted, computed } from 'vue'
 import api from '../api'
 import MenuItemCard from '../components/MenuItemCard.vue'
 import { useCartStore } from '../store/cart'
+import { useUserStore } from '../store/user'
 
 const menu = ref([])
 const displayedMenu = ref([])
@@ -106,7 +118,10 @@ const categories = ref([])
 const selectedTypes = ref(new Set())
 const selectedCategories = ref(new Set())
 
+const showFavorites = ref(false)
+
 const cart = useCartStore()
+const user = useUserStore()
 
 function toArray(val) {
   if (!val && val !== 0) return []
@@ -167,6 +182,17 @@ onMounted(async () => {
     types.value = Array.from(tSet).sort((a, b) => a.localeCompare(b))
     categories.value = Array.from(cSet).sort((a, b) => a.localeCompare(b))
 
+    // 尝试拉取当前登录用户信息（如果前端在登录流程中设置 user store，这里可以是可选）
+    try {
+      const ures = await api.get('/users/me')
+      if (ures && ures.data) {
+        // 服务器返回 liked 作为数组
+        user.setUser(ures.data.id, ures.data.username, ures.data.is_admin, ures.data.avatar, null, ures.data.liked || [])
+      }
+    } catch (e) {
+      // 未登录或请求失败则忽略
+    }
+
   } catch (err) {
     console.error('加载菜单失败', err)
   } finally {
@@ -188,10 +214,16 @@ function toggleCategory(c) {
   applyFilters()
 }
 
+function toggleFavorites() {
+  showFavorites.value = !showFavorites.value
+  applyFilters()
+}
+
 function resetFilters() {
   query.value = ''
   selectedTypes.value = new Set()
   selectedCategories.value = new Set()
+  showFavorites.value = false
   displayedMenu.value = menu.value.slice()
 }
 
@@ -199,6 +231,7 @@ function applyFilters() {
   const q = (query.value || '').trim().toLowerCase()
   const selTypes = selectedTypes.value
   const selCats = selectedCategories.value
+  const onlyFavorites = showFavorites.value
 
   displayedMenu.value = menu.value.filter(item => {
     const nameCandidates = ['name', 'title', 'foodName']
@@ -218,6 +251,13 @@ function applyFilters() {
       if (!icats.some(c => selCats.has(c))) return false
     }
 
+    if (onlyFavorites) {
+      const likedSet = new Set(Array.isArray(user.liked) ? user.liked : [])
+      // 未登录或收藏为空则不显示（可以根据需求改为显示全部或提示）
+      if (likedSet.size === 0) return false
+      if (!likedSet.has(item.id)) return false
+    }
+
     return true
   })
 }
@@ -228,8 +268,6 @@ function addToCart(payload) {
 
 /**
  * 优化后的 chip 样式：
- * - 亮色模式：选中后深色背景 + 白字
- * - 暗色模式：选中后亮色背景 + 白字 + 明显边框
  */
 function chipClass(selected, color) {
   const base =
