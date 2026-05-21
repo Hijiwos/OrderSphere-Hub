@@ -8,6 +8,10 @@ import Register from '../views/Register.vue'
 import Admin from '../views/Admin.vue'
 import UserProfile from '../views/UserProfile.vue'
 import ChangePassword from '../views/ChangePassword.vue'
+import Audit from '../views/Audit.vue'
+import Reports from '../views/Reports.vue'
+import Settings from '../views/Settings.vue'
+import AdminDashboard from '../views/AdminDashboard.vue'
 import UserOrder from '../views/UserOrder.vue'
 import Help from '../views/Help.vue'
 import Feedback from '../views/Feedback.vue'
@@ -21,6 +25,11 @@ const routes = [
   { path: '/checkout', component: Checkout },
   { path: '/admin', component: Admin },
   { path: '/profile', component: UserProfile },
+  { path: '/change-password', component: ChangePassword },
+  { path: '/admin-dashboard', component: AdminDashboard},
+  { path: '/admin/Audit', component: Audit },
+  { path: '/admin/Reports', component: Reports },
+  { path: '/admin/Settings', component: Settings },
   { path: '/change-password', component: ChangePassword },
   { path: '/user-order', component: UserOrder },
   { path: '/help', component: Help },

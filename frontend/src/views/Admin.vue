@@ -46,6 +46,10 @@
       <section v-else-if="currentTab === 'feedback'">
         <AdminFeedback :token="token" />
       </section>
+
+      <section v-else>
+        <AdminMenu :token="token" />
+      </section>
     </main>
   </div>
 </template>
@@ -74,6 +78,10 @@ const token = ref(localStorage.getItem('token') || '')
 const username = ref(localStorage.getItem('username') || '')
 
 onMounted(() => {
+
+  // const params = new URLSearchParams(window.location.search)
+  // currentTab.value = params.get('tab') || ''
+
   if (!token.value) {
     window.location.href = '/login'
   }
