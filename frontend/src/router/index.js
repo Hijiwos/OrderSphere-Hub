@@ -8,6 +8,10 @@ import Register from '../views/Register.vue'
 import Admin from '../views/Admin.vue'
 import UserProfile from '../views/UserProfile.vue'
 import ChangePassword from '../views/ChangePassword.vue'
+import UserOrder from '../views/UserOrder.vue'
+import Help from '../views/Help.vue'
+import Feedback from '../views/Feedback.vue'
+import AdminFeedback from '../views/AdminFeedback.vue'
 
 const routes = [
   { path: '/', redirect: '/menu' },
@@ -17,7 +21,11 @@ const routes = [
   { path: '/checkout', component: Checkout },
   { path: '/admin', component: Admin },
   { path: '/profile', component: UserProfile },
-  { path: '/change-password', component: ChangePassword }
+  { path: '/change-password', component: ChangePassword },
+  { path: '/user-order', component: UserOrder },
+  { path: '/help', component: Help },
+  { path: '/feedback', component: Feedback },
+  { path: '/adminfeedback', component: AdminFeedback }
 ]
 
 const router = createRouter({

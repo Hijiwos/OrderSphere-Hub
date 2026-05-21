@@ -42,6 +42,10 @@
       <section v-else-if="currentTab === 'users'">
         <AdminUsers :token="token" />
       </section>
+
+      <section v-else-if="currentTab === 'feedback'">
+        <AdminFeedback :token="token" />
+      </section>
     </main>
   </div>
 </template>
@@ -52,13 +56,15 @@ import { ref, onMounted } from 'vue'
 import AdminMenu from '../components/AdminMenu.vue'
 import AdminOrders from '../components/AdminOrders.vue'
 import AdminUsers from '../components/AdminUsers.vue'
+import AdminFeedback from '../components/AdminFeedback.vue'
 
 const user = useUserStore()
 
 const tabs = [
   { key: 'menu', label: '菜单管理' },
   { key: 'orders', label: '订单管理' },
-  { key: 'users', label: '用户管理' }
+  { key: 'users', label: '用户管理' },
+  { key: 'feedback', label: '反馈管理' }
 ]
 
 const currentTab = ref('menu')
