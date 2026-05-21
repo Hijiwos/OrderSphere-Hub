@@ -31,6 +31,10 @@
         </button>
       </div>
 
+<!--      <section v-if="currentTab === 'dashboard'">-->
+<!--        <AdminDashboard :token="token" />-->
+<!--      </section>-->
+
       <section v-if="currentTab === 'menu'">
         <AdminMenu :token="token" />
       </section>
@@ -41,6 +45,10 @@
 
       <section v-else-if="currentTab === 'users'">
         <AdminUsers :token="token" />
+      </section>
+
+      <section v-else>
+        <AdminMenu :token="token" />
       </section>
     </main>
   </div>
@@ -68,6 +76,10 @@ const token = ref(localStorage.getItem('token') || '')
 const username = ref(localStorage.getItem('username') || '')
 
 onMounted(() => {
+
+  // const params = new URLSearchParams(window.location.search)
+  // currentTab.value = params.get('tab') || ''
+
   if (!token.value) {
     window.location.href = '/login'
   }

@@ -18,6 +18,10 @@
         <!-- 退出按钮已从这里移除；个人资料页有退出按钮 -->
       </span>
 
+      <router-link v-if="user.isAdmin" to="/admin-dashboard" class="hover:text-yellow-300">
+        管理员页面
+      </router-link>
+
       <router-link v-if="user.isAdmin" to="/admin" class="hover:text-yellow-300">
         管理后台
       </router-link>
